@@ -1,10 +1,14 @@
 package lv.venta.demo.models;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -45,10 +49,20 @@ public class Professor {
 	//private Collection<Course> courses;
 	
 		
-	//viens-pret-viens
-	@OneToOne(mappedBy="professor")
+	
+	
+	@ManyToMany(mappedBy="professors")
 	@ToString.Exclude
-	private Course course;
+	private Collection<Course> courses = new ArrayList<>();
+	
+	
+	public void addNewCourse(Course course)
+	{
+		courses.add(course);
+	}
+	
+	
+	
 	
 	//2. get un set no lombok
 		//3.1 bezargument konstruktors - lombok

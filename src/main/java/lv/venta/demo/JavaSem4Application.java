@@ -1,5 +1,7 @@
 package lv.venta.demo;
 
+import java.util.Arrays;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,10 +42,16 @@ public class JavaSem4Application {
 				profRepo.save(prof1);
 				profRepo.save(prof2);
 				
-				Course cour1 = new Course("JAVA", 4, prof1);
-				Course cour2 = new Course("Matematika", 2, prof2);
+				Course cour1 = new Course("JAVA", 4, Arrays.asList(prof1));//Karina pasnegts
+				Course cour2 = new Course("Matematika", 2, Arrays.asList(prof1, prof2));//Krin un Estere pasniegs
 				courRepo.save(cour1);
 				courRepo.save(cour2);
+				
+				prof1.addNewCourse(cour1);
+				prof1.addNewCourse(cour2);
+				profRepo.save(prof1);
+				prof2.addNewCourse(cour2);
+				profRepo.save(prof2);
 				
 				
 				gradRepo.save(new Grade(5, cour1, st1));//5 JAVA Janis

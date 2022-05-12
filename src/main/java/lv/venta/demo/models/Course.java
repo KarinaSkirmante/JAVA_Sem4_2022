@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -43,10 +45,17 @@ public class Course {
 	//private Professor professor;
 
 	
-	//viens-pret-viens
-	@OneToOne
-	@JoinColumn(name="IdPr")
-	private Professor professor;
+	@ManyToMany
+	@JoinTable(joinColumns=@JoinColumn(name="IdCo"),
+	inverseJoinColumns=@JoinColumn(name="IdPr"))
+	private Collection<Professor> professors;
+	
+	
+	
+	
+	
+	
+	
 
 	
 	//1. anotācijas izvēle
@@ -63,10 +72,10 @@ public class Course {
 	
 	
 
-	public Course(String title, int cp, Professor professor) {
+	public Course(String title, int cp, Collection<Professor> professors) {
 		this.title = title;
 		this.cp = cp;
-		this.professor = professor;
+		this.professors = professors;
 	}
 
 	
