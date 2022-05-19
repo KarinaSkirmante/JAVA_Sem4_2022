@@ -5,20 +5,32 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.experimental.UtilityClass;
 import lv.venta.demo.models.Grade;
 import lv.venta.demo.repos.IGradeRepo;
+import lv.venta.demo.repos.IStudentRepo;
 import lv.venta.demo.services.IFilteringGradeService;
 
 @Service
 public class FilteringGradeServiceImpl implements IFilteringGradeService {
 
+	//TODO apstrādāt ar existsBy un ja neeksistē, tad mest izņēmumu
 	@Autowired
 	private IGradeRepo gradeRepo;
+	@Autowired
+	private IStudentRepo studRepo;
 	
 	@Override
 	public ArrayList<Grade> getAllGradesByStudentId(int id) throws Exception {
-		ArrayList<Grade> result = gradeRepo.findByStudentIdSt(id);
-		return result;
+		if(studRepo.existsById(id))
+		{
+			ArrayList<Grade> result = gradeRepo.findByStudentIdSt(id);
+			return result;
+		}
+		else
+		{
+			throw new Exception("Id nav eksistējošs");
+		}
 	}
 	
 	/*public void deleteStudentById(int id)
@@ -40,13 +52,13 @@ public class FilteringGradeServiceImpl implements IFilteringGradeService {
 	@Override
 	public ArrayList<Grade> getAllGradesByCourseId(int id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return gradeRepo.findByCourseIdCo(id);
 	}
 	//TODO
 	@Override
 	public ArrayList<Grade> getAllGradesByStudentName(String name) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return gradeRepo.findByStudentName(name);
 	}
 
 	@Override
@@ -59,7 +71,7 @@ public class FilteringGradeServiceImpl implements IFilteringGradeService {
 	@Override
 	public ArrayList<Grade> getAllFailingGradesByCourseId(int id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return gradeRepo.findByCourseIdCoAndValueLessThan(id,4);
 	}
 
 	@Override
@@ -73,7 +85,15 @@ public class FilteringGradeServiceImpl implements IFilteringGradeService {
 	@Override
 	public float getGradeAverageByStudentId(int id) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+		return gradeRepo.calculateAVGGradeByStudentId(id);
 	}
+	
+	//1.TODO visus servisā
+	//2. izveidot kontroleiru klasi ar kontrolieru funkcijām (get)
+	//3. uztaisīt html lapu vairāku atzmju attēlošanai
+	//3.1. kontrolieros, kur sserviss atgriezīs float, tikai izprintēt
+	//4. notestēt visus kontrolierus no 
+	//web browsera izpildot atbisltošos url
+	
 
 }
